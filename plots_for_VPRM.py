@@ -21,28 +21,28 @@ def plot_measured_vs_optimized_VPRM(
     gpp,
 ):
     df_year.set_index(timestamp, inplace=True)
-    font_size = 14
+    font_size = 16
 
-    fig, axes = plt.subplots(3, 1, figsize=(10, 18))
+    fig, axes = plt.subplots(1, 3, figsize=(20, 10))
 
     # Plot comparison of Reco
-    axes[0].plot(
-        df_year.index,
-        Reco_VPRM,
-        linestyle="",
-        marker="o",
-        markersize=1,
-        label="Modeled Reco first guess",
-        color="green",
-    )
     axes[0].plot(
         df_year.index,
         df_year[r_eco],  # TODO switch for V13* df_year["NIGHT"],
         linestyle="",
         marker="o",
         markersize=1,
-        label=r_eco,
+        label=r"FLUXNET R$_\text{eco}$",
         color="blue",
+    )
+    axes[0].plot(
+        df_year.index,
+        Reco_VPRM,
+        linestyle="",
+        marker="o",
+        markersize=1,
+        label=r"Modeled R$_\text{eco}$ REF",
+        color="green",
     )
     axes[0].plot(
         df_year.index,
@@ -50,70 +50,72 @@ def plot_measured_vs_optimized_VPRM(
         linestyle="",
         marker="o",
         markersize=1,
-        label="Modeled Reco optimized",
+        label=r"Modeled R$_\text{eco}$ SITE",
         color="red",
     )
     axes[0].set_xlabel("Date", fontsize=font_size + 2)
-    axes[0].set_ylabel("Reco", fontsize=font_size + 2)
-    axes[0].set_title(site_name + " - Measured and Modeled GPP", fontsize=font_size + 2)
+    axes[0].set_ylabel(r"R$_\text{eco}$", fontsize=font_size + 2)
+    # axes[0].set_title(site_name + " - Measured and Modeled GPP", fontsize=font_size + 2)
     axes[0].legend(fontsize=font_size)
     axes[0].grid(True)
-    axes[0].tick_params(axis="both", which="major", labelsize=font_size)
-
-    # Plot comparison of GPP
-    axes[1].plot(
-        df_year.index,
-        GPP_VPRM,
-        linestyle="",
-        marker="o",
-        markersize=1,
-        label="Modeled GPP first guess",
-        color="green",
+    axes[0].tick_params(
+        axis="both", which="major", labelsize=font_size, labelrotation=90
     )
 
+    # Plot comparison of GPP
     axes[1].plot(
         df_year.index,
         df_year[gpp],
         linestyle="",
         marker="o",
         markersize=1,
-        label=gpp,
+        label="FLUXNET GPP",
         color="blue",
     )
-
+    axes[1].plot(
+        df_year.index,
+        GPP_VPRM,
+        linestyle="",
+        marker="o",
+        markersize=1,
+        label="Modeled GPP REF",
+        color="green",
+    )
     axes[1].plot(
         df_year.index,
         GPP_VPRM_opt,
         linestyle="",
         marker="o",
         markersize=1,
-        label="Modeled GPP optimized",
+        label="Modeled GPP SITE",
         color="red",
     )
     axes[1].set_xlabel("Date", fontsize=font_size + 2)
     axes[1].set_ylabel("GPP", fontsize=font_size + 2)
     axes[1].legend(fontsize=font_size)
     axes[1].grid(True)
-    axes[1].tick_params(axis="both", which="major", labelsize=font_size)
+    axes[1].tick_params(
+        axis="both", which="major", labelsize=font_size, labelrotation=90
+    )
 
     # Plot comparison of NEE
-    axes[2].plot(
-        df_year.index,
-        Reco_VPRM - GPP_VPRM,
-        linestyle="",
-        marker="o",
-        markersize=1,
-        label="Modeled NEE first guess",
-        color="green",
-    )
     axes[2].plot(
         df_year.index,
         df_year[nee],
         linestyle="",
         marker="o",
         markersize=1,
-        label=nee,
+        label="FLUXNET NEE",
         color="blue",
+    )
+    axes[2].plot(
+        df_year.index,
+        Reco_VPRM - GPP_VPRM,
+        linestyle="",
+        marker="o",
+        markersize=1,
+        label="Modeled NEE REF",
+        color="green",
     )
     axes[2].plot(
         df_year.index,
@@ -121,14 +123,16 @@ def plot_measured_vs_optimized_VPRM(
         linestyle="",
         marker="o",
         markersize=1,
-        label="Modeled NEE optimized",
+        label="Modeled NEE SITE",
         color="red",
     )
     axes[2].set_xlabel("Date", fontsize=font_size + 2)
     axes[2].set_ylabel("NEE", fontsize=font_size + 2)
     axes[2].legend(fontsize=font_size)
     axes[2].grid(True)
-    axes[2].tick_params(axis="both", which="major", labelsize=font_size)
+    axes[2].tick_params(
+        axis="both", which="major", labelsize=font_size, labelrotation=90
+    )
     plt.tight_layout()
 
     plt.savefig(
@@ -144,7 +148,7 @@ def plot_measured_vs_optimized_VPRM(
         + str(opt_method)
         + "_"
         + str(maxiter)
-        + ".png",
+        + ".pdf",
         dpi=200,
         bbox_inches="tight",
     )
